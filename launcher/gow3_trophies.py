@@ -11,6 +11,7 @@ UI: texts of the page for gow3_lang.py, keyed by the English text (Russian is wr
 English text in gow3_launcher_win.py, as everywhere else in the launcher)."""
 
 import io
+import os
 import re
 import struct
 from pathlib import Path
@@ -520,6 +521,11 @@ UI = {
         'Only trophies unlocked with this port are listed; the ones earned on a PlayStation are not known to it.': 'تظهر فقط الكؤوس التي فُتحت عبر هذا المنفذ؛ أما التي حصلت عليها على PlayStation فهو لا يعرفها.',
         'TROPHY UNLOCKED': 'تم فتح كأس',
         'Up/Down: scroll   Left/Right: filter   F8 / R3+R2 / Esc: close': 'أعلى/أسفل: تمرير   يسار/يمين: تصفية   F8 / R3+R2 / Esc: إغلاق',
+        'Reset trophies': 'إعادة ضبط الكؤوس',
+        'Close the game before resetting the trophies.': 'أغلق اللعبة قبل إعادة ضبط الكؤوس.',
+        'Lock all {} unlocked trophies again? A copy is kept as trophies.dat.bak.': 'هل تريد إقفال جميع الكؤوس المفتوحة ({}) من جديد؟ سيتم الاحتفاظ بنسخة باسم trophies.dat.bak.',
+        'No trophy is unlocked.': 'لا يوجد أي كأس مفتوح.',
+        'Could not reset the trophies: {}': 'تعذّرت إعادة ضبط الكؤوس: {}',
     },
     'es': {
         'Trophies': 'Trofeos',
@@ -539,6 +545,11 @@ UI = {
         'Only trophies unlocked with this port are listed; the ones earned on a PlayStation are not known to it.': 'Solo se muestran los trofeos desbloqueados con este port; los que conseguiste en una PlayStation no los conoce.',
         'TROPHY UNLOCKED': 'TROFEO DESBLOQUEADO',
         'Up/Down: scroll   Left/Right: filter   F8 / R3+R2 / Esc: close': 'Arriba/Abajo: desplazar   Izquierda/Derecha: filtrar   F8 / R3+R2 / Esc: cerrar',
+        'Reset trophies': 'Restablecer trofeos',
+        'Close the game before resetting the trophies.': 'Cierra el juego antes de restablecer los trofeos.',
+        'Lock all {} unlocked trophies again? A copy is kept as trophies.dat.bak.': '¿Volver a bloquear los {} trofeos desbloqueados? Se guarda una copia como trophies.dat.bak.',
+        'No trophy is unlocked.': 'No hay ningún trofeo desbloqueado.',
+        'Could not reset the trophies: {}': 'No se pudieron restablecer los trofeos: {}',
     },
     'pt': {
         'Trophies': 'Troféus',
@@ -558,6 +569,11 @@ UI = {
         'Only trophies unlocked with this port are listed; the ones earned on a PlayStation are not known to it.': 'Só aparecem os troféus desbloqueados com este port; os que você ganhou em um PlayStation ele não conhece.',
         'TROPHY UNLOCKED': 'TROFÉU DESBLOQUEADO',
         'Up/Down: scroll   Left/Right: filter   F8 / R3+R2 / Esc: close': 'Cima/Baixo: rolar   Esquerda/Direita: filtrar   F8 / R3+R2 / Esc: fechar',
+        'Reset trophies': 'Redefinir troféus',
+        'Close the game before resetting the trophies.': 'Feche o jogo antes de redefinir os troféus.',
+        'Lock all {} unlocked trophies again? A copy is kept as trophies.dat.bak.': 'Bloquear de novo os {} troféus desbloqueados? Uma cópia fica guardada como trophies.dat.bak.',
+        'No trophy is unlocked.': 'Nenhum troféu está desbloqueado.',
+        'Could not reset the trophies: {}': 'Não foi possível redefinir os troféus: {}',
     },
     'fr': {
         'Trophies': 'Trophées',
@@ -577,6 +593,11 @@ UI = {
         'Only trophies unlocked with this port are listed; the ones earned on a PlayStation are not known to it.': 'Seuls les trophées débloqués avec ce port sont listés ; ceux obtenus sur une PlayStation lui sont inconnus.',
         'TROPHY UNLOCKED': 'TROPHÉE DÉBLOQUÉ',
         'Up/Down: scroll   Left/Right: filter   F8 / R3+R2 / Esc: close': 'Haut/Bas : défiler   Gauche/Droite : filtrer   F8 / R3+R2 / Échap : fermer',
+        'Reset trophies': 'Réinitialiser les trophées',
+        'Close the game before resetting the trophies.': 'Fermez le jeu avant de réinitialiser les trophées.',
+        'Lock all {} unlocked trophies again? A copy is kept as trophies.dat.bak.': 'Verrouiller de nouveau les {} trophées débloqués ? Une copie est conservée sous le nom trophies.dat.bak.',
+        'No trophy is unlocked.': "Aucun trophée n'est débloqué.",
+        'Could not reset the trophies: {}': 'Impossible de réinitialiser les trophées : {}',
     },
     'de': {
         'Trophies': 'Trophäen',
@@ -596,6 +617,11 @@ UI = {
         'Only trophies unlocked with this port are listed; the ones earned on a PlayStation are not known to it.': 'Es werden nur Trophäen angezeigt, die mit diesem Port freigeschaltet wurden; auf einer PlayStation erspielte kennt er nicht.',
         'TROPHY UNLOCKED': 'TROPHÄE FREIGESCHALTET',
         'Up/Down: scroll   Left/Right: filter   F8 / R3+R2 / Esc: close': 'Hoch/Runter: scrollen   Links/Rechts: filtern   F8 / R3+R2 / Esc: schließen',
+        'Reset trophies': 'Trophäen zurücksetzen',
+        'Close the game before resetting the trophies.': 'Beenden Sie das Spiel, bevor Sie die Trophäen zurücksetzen.',
+        'Lock all {} unlocked trophies again? A copy is kept as trophies.dat.bak.': 'Alle {} freigeschalteten Trophäen wieder sperren? Eine Kopie bleibt als trophies.dat.bak erhalten.',
+        'No trophy is unlocked.': 'Keine Trophäe ist freigeschaltet.',
+        'Could not reset the trophies: {}': 'Die Trophäen konnten nicht zurückgesetzt werden: {}',
     },
     'it': {
         'Trophies': 'Trofei',
@@ -615,6 +641,11 @@ UI = {
         'Only trophies unlocked with this port are listed; the ones earned on a PlayStation are not known to it.': 'Sono elencati solo i trofei sbloccati con questo port; quelli ottenuti su una PlayStation non li conosce.',
         'TROPHY UNLOCKED': 'TROFEO SBLOCCATO',
         'Up/Down: scroll   Left/Right: filter   F8 / R3+R2 / Esc: close': 'Su/Giù: scorri   Sinistra/Destra: filtra   F8 / R3+R2 / Esc: chiudi',
+        'Reset trophies': 'Reimposta trofei',
+        'Close the game before resetting the trophies.': 'Chiudi il gioco prima di reimpostare i trofei.',
+        'Lock all {} unlocked trophies again? A copy is kept as trophies.dat.bak.': 'Bloccare di nuovo i {} trofei sbloccati? Una copia viene conservata come trophies.dat.bak.',
+        'No trophy is unlocked.': 'Nessun trofeo è sbloccato.',
+        'Could not reset the trophies: {}': 'Impossibile reimpostare i trofei: {}',
     },
     'pl': {
         'Trophies': 'Trofea',
@@ -634,6 +665,11 @@ UI = {
         'Only trophies unlocked with this port are listed; the ones earned on a PlayStation are not known to it.': 'Wyświetlane są tylko trofea odblokowane w tym porcie; tych zdobytych na PlayStation nie zna.',
         'TROPHY UNLOCKED': 'TROFEUM ODBLOKOWANE',
         'Up/Down: scroll   Left/Right: filter   F8 / R3+R2 / Esc: close': 'Góra/Dół: przewijanie   Lewo/Prawo: filtr   F8 / R3+R2 / Esc: zamknij',
+        'Reset trophies': 'Zresetuj trofea',
+        'Close the game before resetting the trophies.': 'Zamknij grę przed zresetowaniem trofeów.',
+        'Lock all {} unlocked trophies again? A copy is kept as trophies.dat.bak.': 'Zablokować ponownie wszystkie odblokowane trofea ({})? Kopia zostanie zachowana jako trophies.dat.bak.',
+        'No trophy is unlocked.': 'Żadne trofeum nie jest odblokowane.',
+        'Could not reset the trophies: {}': 'Nie udało się zresetować trofeów: {}',
     },
     'tr': {
         'Trophies': 'Kupalar',
@@ -653,6 +689,11 @@ UI = {
         'Only trophies unlocked with this port are listed; the ones earned on a PlayStation are not known to it.': "Yalnızca bu portla açılan kupalar listelenir; PlayStation'da kazanılanları bilmez.",
         'TROPHY UNLOCKED': 'KUPA AÇILDI',
         'Up/Down: scroll   Left/Right: filter   F8 / R3+R2 / Esc: close': 'Yukarı/Aşağı: kaydır   Sol/Sağ: filtre   F8 / R3+R2 / Esc: kapat',
+        'Reset trophies': 'Kupaları sıfırla',
+        'Close the game before resetting the trophies.': 'Kupaları sıfırlamadan önce oyunu kapatın.',
+        'Lock all {} unlocked trophies again? A copy is kept as trophies.dat.bak.': 'Açılmış {} kupanın tümü yeniden kilitlensin mi? Bir kopya trophies.dat.bak olarak saklanır.',
+        'No trophy is unlocked.': 'Açılmış kupa yok.',
+        'Could not reset the trophies: {}': 'Kupalar sıfırlanamadı: {}',
     },
     'zh': {
         'Trophies': '奖杯',
@@ -672,6 +713,11 @@ UI = {
         'Only trophies unlocked with this port are listed; the ones earned on a PlayStation are not known to it.': '只列出通过此移植版解锁的奖杯；在 PlayStation 上获得的它并不知道。',
         'TROPHY UNLOCKED': '奖杯已解锁',
         'Up/Down: scroll   Left/Right: filter   F8 / R3+R2 / Esc: close': '上/下：滚动   左/右：筛选   F8 / R3+R2 / Esc：关闭',
+        'Reset trophies': '重置奖杯',
+        'Close the game before resetting the trophies.': '重置奖杯前请先关闭游戏。',
+        'Lock all {} unlocked trophies again? A copy is kept as trophies.dat.bak.': '要将已解锁的 {} 个奖杯全部重新锁定吗？会保留一份副本 trophies.dat.bak。',
+        'No trophy is unlocked.': '没有已解锁的奖杯。',
+        'Could not reset the trophies: {}': '无法重置奖杯：{}',
     },
     'ja': {
         'Trophies': 'トロフィー',
@@ -691,6 +737,11 @@ UI = {
         'Only trophies unlocked with this port are listed; the ones earned on a PlayStation are not known to it.': 'このポートで獲得したトロフィーのみ表示されます。PlayStation で獲得したものは認識できません。',
         'TROPHY UNLOCKED': 'トロフィー獲得',
         'Up/Down: scroll   Left/Right: filter   F8 / R3+R2 / Esc: close': '上/下：スクロール   左/右：絞り込み   F8 / R3+R2 / Esc：閉じる',
+        'Reset trophies': 'トロフィーをリセット',
+        'Close the game before resetting the trophies.': 'トロフィーをリセットする前にゲームを終了してください。',
+        'Lock all {} unlocked trophies again? A copy is kept as trophies.dat.bak.': '獲得済みの {} 個のトロフィーをすべて未獲得に戻しますか？コピーが trophies.dat.bak として残ります。',
+        'No trophy is unlocked.': '獲得済みのトロフィーはありません。',
+        'Could not reset the trophies: {}': 'トロフィーをリセットできませんでした：{}',
     },
     'ko': {
         'Trophies': '트로피',
@@ -710,6 +761,11 @@ UI = {
         'Only trophies unlocked with this port are listed; the ones earned on a PlayStation are not known to it.': '이 포트로 획득한 트로피만 표시됩니다. PlayStation에서 얻은 트로피는 알 수 없습니다.',
         'TROPHY UNLOCKED': '트로피 획득',
         'Up/Down: scroll   Left/Right: filter   F8 / R3+R2 / Esc: close': '위/아래: 스크롤   왼쪽/오른쪽: 필터   F8 / R3+R2 / Esc: 닫기',
+        'Reset trophies': '트로피 초기화',
+        'Close the game before resetting the trophies.': '트로피를 초기화하기 전에 게임을 종료하세요.',
+        'Lock all {} unlocked trophies again? A copy is kept as trophies.dat.bak.': '획득한 트로피 {}개를 모두 다시 잠글까요? 복사본이 trophies.dat.bak으로 보관됩니다.',
+        'No trophy is unlocked.': '획득한 트로피가 없습니다.',
+        'Could not reset the trophies: {}': '트로피를 초기화하지 못했습니다: {}',
     },
 }
 
@@ -778,3 +834,14 @@ def trophy_tier(png):
     if b >= r:
         return 'platinum'
     return 'silver' if spread < 0.4 else 'bronze' if spread < 0.72 else 'gold'
+
+
+def reset_trophies(path):
+    """Locks every trophy again: user/trophies.dat is moved to trophies.dat.bak (replacing an older
+    copy). Returns how many trophies were unlocked (0: nothing is changed); OSError when the file
+    cannot be moved. The game must be closed: it keeps the trophies in memory while it runs."""
+    path = Path(path)
+    unlocked = len(read_unlocked_trophies(path))
+    if unlocked:
+        os.replace(path, path.with_name(path.name + '.bak'))
+    return unlocked

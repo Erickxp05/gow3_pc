@@ -28,12 +28,12 @@ language, and the game reads it at start. Change the language of the launcher an
 again to change the language of the notice and of the list.
 
 Languages: English, Russian, Arabic, Spanish, Portuguese, French, German, Italian, Polish, Turkish,
-Chinese, Japanese and Korean (`launcher/gow3_trophies.py`). English is the text of the PlayStation
+Chinese, Japanese and Korean (`launcher/spartanport_trophies.py`). English is the text of the PlayStation
 list; Portuguese is the text of the Brazilian PlayStation list. **The others are translations, not
 the official localized texts** (those are encrypted inside the `.trp` and are not read). A language
 without a list uses English.
 
-Without the launcher, put the same file by hand in the saves folder (`user/` or `GOW3_USER_DIR`):
+Without the launcher, put the same file by hand in the saves folder (`user/` or `SPARTAN_USER_DIR`):
 `trophy_texts.txt`, or `trophy_names.txt` (same format, used when there is no `trophy_texts.txt`).
 
 ### File format
@@ -75,12 +75,12 @@ The texts are listed in the order of the PlayStation list, which matches this or
   `0x14`, entries from `0x60`: name, offset, size) and the texts file. `UnlockTrophy` sets the bit,
   saves the state and shows the notice; the platinum is granted when every other trophy is set.
   `GetTrophyUnlockState` returns the saved bits and the trophy count.
-- `gpu/gow3gpu.h`: `gow3gpu_toast_trophy` (the notice) and `gow3gpu_trophy_setup` (the list: texts,
+- `gpu/spartanportgpu.h`: `spartanportgpu_toast_trophy` (the notice) and `spartanportgpu_trophy_setup` (the list: texts,
   icons and a pointer to the live state), handed over once by the runtime.
-- `gpu/shim/gow3_overlay.cpp`: draws the notice and the list with Dear ImGui, decodes the icons with
-  `Gow3Png` (on a worker thread) and handles the keys and buttons of the list.
-- `launcher/gow3_trophies.py`: the texts, the reader of the `.trp` and of `trophies.dat`.
-- `launcher/gow3_launcher_win.py`: the Trophies page and `write_trophy_texts`.
+- `gpu/shim/spartanport_overlay.cpp`: draws the notice and the list with Dear ImGui, decodes the icons with
+  `SpartanPng` (on a worker thread) and handles the keys and buttons of the list.
+- `launcher/spartanport_trophies.py`: the texts, the reader of the `.trp` and of `trophies.dat`.
+- `launcher/spartanport_launcher_win.py`: the Trophies page and `write_trophy_texts`.
 - `tests/test_trophies.py`: unit tests (they build a `.trp` and need no game files).
 
 ## Limits

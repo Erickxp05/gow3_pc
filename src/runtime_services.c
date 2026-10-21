@@ -6,7 +6,7 @@
  * Every entry here is an explicit contract; unknown functions still stop. */
 #define _GNU_SOURCE
 #include "runtime.h"
-#include "gpu/gow3gpu.h"
+#include "gpu/spartanportgpu.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -71,7 +71,7 @@ static ABI int32_t user_event(int32_t *event) {
 }
 
 /* ---- SystemService ---- */
-static int language(void) { const char *v=getenv("GOW3_LANGUAGE"); return v ? atoi(v) : 1; }
+static int language(void) { const char *v=getenv("SPARTAN_LANGUAGE"); return v ? atoi(v) : 1; }
 static ABI int32_t system_param(int32_t id,int32_t *value) {
     if (!value) return SYSTEM_PARAMETER;
     switch (id) {
@@ -305,7 +305,7 @@ static ABI int32_t save_open(const unsigned char *p) {
     }
     uint32_t type; memcpy(&type,p+56,4);
     const char *title=type==1 ? "Save game" : type==2 ? "Load game" : "Delete save";
-    if (!n || !gow3gpu_choice_begin(title,labels,icons,n,0)) {
+    if (!n || !spartanportgpu_choice_begin(title,labels,icons,n,0)) {
         printf("Runtime: SaveDataDialog list (%s): %s\n",title,n ? "no window, cancelled" : "no saves, cancelled");
         save_dialog.result=SAVE_RESULT_CANCELED;
         dialogs[2].status=DIALOG_FINISHED; dialogs[2].button=0;
@@ -318,7 +318,7 @@ static ABI int32_t save_open(const unsigned char *p) {
 }
 static ABI int32_t save_status(void) {
     if (save_dialog.choosing) {
-        int choice=gow3gpu_choice_poll();
+        int choice=spartanportgpu_choice_poll();
         if (choice!=-1) {
             save_dialog.choosing=0;
             dialogs[2].status=DIALOG_FINISHED;
@@ -404,19 +404,19 @@ static ABI int32_t ime_init(const ImeParam *param, const void *extended) {
     char initial[512], prompt[256];
     utf16_to_utf8(param->buffer,param->max_length,initial,sizeof(initial));
     utf16_to_utf8(param->title,128,prompt,sizeof(prompt));
-    const char *preset=getenv("GOW3_IME_TEXT");
+    const char *preset=getenv("SPARTAN_IME_TEXT");
     if (preset) { ime_complete(0,preset); return 0; }
     /* An empty field starts with the user name: a controller alone can accept it (the port
      * has no on-screen keyboard). */
     const char *start=initial[0] ? initial : USER_NAME;
-    if (!gow3gpu_text_input_begin(start,prompt[0] ? prompt : "Text")) ime_complete(0,start);
+    if (!spartanportgpu_text_input_begin(start,prompt[0] ? prompt : "Text")) ime_complete(0,start);
     else printf("Runtime: ImeDialog opened: shown on screen; keyboard Enter or Cross accepts, Esc or Circle cancels\n");
     return 0;
 }
 static ABI int32_t ime_status(void) {
     if (ime.running) {
         char text[512];
-        int state=gow3gpu_text_input_poll(text,sizeof(text));
+        int state=spartanportgpu_text_input_poll(text,sizeof(text));
         if (state) ime_complete(state==1 ? 0 : 1,text);
     }
     return ime.running ? 1 : ime.finished ? 2 : 0; /* Running / Finished / None */
@@ -431,7 +431,7 @@ static ABI int32_t ime_term(void) { memset(&ime,0,sizeof(ime)); return 0; }
 /* ---- Trophies: unlocks are kept on disk and reported back to the game ----
  * The count of trophies and their icons (TROP000.PNG, TROP001.PNG...) come from the game's
  * own sce_sys/trophy/trophy00.trp. The unlocked set is saved in <user dir>/trophies.dat
- * (user dir: GOW3_USER_DIR, or "user"). The texts come from <user dir>/trophy_texts.txt (written by the
+ * (user dir: SPARTAN_USER_DIR, or "user"). The texts come from <user dir>/trophy_texts.txt (written by the
  * launcher in its language) or, without it, from a hand-made trophy_names.txt. */
 #define TROPHY_MAX 128
 #define TROPHY_ALREADY_UNLOCKED ((int32_t)0x80551609)
@@ -441,7 +441,7 @@ static int trophy_ready;
 
 static const char *trophy_state_path(void) {
     static char path[512];
-    const char *dir=getenv("GOW3_USER_DIR");
+    const char *dir=getenv("SPARTAN_USER_DIR");
     snprintf(path,sizeof(path),"%s/trophies.dat",dir && dir[0] ? dir : "user");
     return path;
 }
@@ -484,7 +484,7 @@ static char trophy_label[9][200];
 static char trophy_names[TROPHY_MAX][64];
 static char trophy_details[TROPHY_MAX][160];
 static FILE *trophy_open_text(char *path,size_t size) {
-    const char *dir=getenv("GOW3_USER_DIR");
+    const char *dir=getenv("SPARTAN_USER_DIR");
     static const char *const files[2]={"trophy_texts.txt","trophy_names.txt"};
     for (int i=0;i<2;i++) {
         snprintf(path,size,"%s/%s",dir && dir[0] ? dir : "user",files[i]);
@@ -578,7 +578,7 @@ static void trophy_load_once(void) {
     printf("Runtime: trophies: %u in trophy00.trp, %u already unlocked\n",total,
         (unsigned)(__builtin_popcount(trophy_flags[0])+__builtin_popcount(trophy_flags[1])+__builtin_popcount(trophy_flags[2])+__builtin_popcount(trophy_flags[3])));
     /* The in-game list (F8 / R3+R2) and the notice labels: the texts above, the icons from the TRP. */
-    static Gow3GpuTrophyInfo infos[TROPHY_MAX];
+    static SpartanGpuTrophyInfo infos[TROPHY_MAX];
     for (uint32_t i=0;i<total;i++) {
         int id=trophy_ids[i];
         if (!trophy_names[id][0]) snprintf(trophy_names[id],sizeof(trophy_names[id]),"Trophy ID %d",id);
@@ -587,13 +587,13 @@ static void trophy_load_once(void) {
         infos[i].id=id; infos[i].name=trophy_names[id]; infos[i].detail=trophy_details[id];
         infos[i].png=png; infos[i].png_size=png_size;
     }
-    Gow3GpuTrophyLabels labels={
+    SpartanGpuTrophyLabels labels={
         trophy_label[0][0] ? trophy_label[0] : 0, trophy_label[1][0] ? trophy_label[1] : 0,
         trophy_label[2][0] ? trophy_label[2] : 0, trophy_label[3][0] ? trophy_label[3] : 0,
         trophy_label[4][0] ? trophy_label[4] : 0, trophy_label[5][0] ? trophy_label[5] : 0,
         trophy_label[6][0] ? trophy_label[6] : 0, trophy_label[7][0] ? trophy_label[7] : 0,
         trophy_label[8][0] ? trophy_label[8] : 0};
-    gow3gpu_trophy_setup(&labels,infos,(int)total,(const volatile uint32_t *)trophy_flags);
+    spartanportgpu_trophy_setup(&labels,infos,(int)total,(const volatile uint32_t *)trophy_flags);
 }
 static ABI int32_t trophy_context(int32_t *ctx,int32_t user,uint32_t label,uint64_t options) {
     (void)user; (void)label; (void)options;
@@ -616,7 +616,7 @@ static void trophy_notify(int32_t id) {
     snprintf(detail,sizeof(detail),"%s",trophy_details[id]);
     int has_icon=trophy_icon(id,&png,&png_size);
     pthread_mutex_unlock(&lock);
-    gow3gpu_toast_trophy(notice,detail,has_icon ? png : 0,has_icon ? png_size : 0);
+    spartanportgpu_toast_trophy(notice,detail,has_icon ? png : 0,has_icon ? png_size : 0);
 }
 /* On a PlayStation the system grants the platinum (id 0) with the last trophy: 1 when every other
  * trophy of the package is unlocked and this call just unlocked the platinum. Lock held. */
